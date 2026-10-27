@@ -27,7 +27,7 @@ module.exports=async(req,res)=>{
  const noAlt=(html.match(/<img\b(?![^>]*\balt=)[^>]*>/gi)||[]).length;if(noAlt)seo.push(`${noAlt} image(s) missing alt text`);
  const aff=links.filter(r=>r.affiliate).length,hasDisc=DISC.test(text),blocked=links.filter(r=>[403,429,503,999].includes(r.status)),dead=links.filter(r=>(r.status===0||r.status>=400)&&!blocked.includes(r));
  const untagged=links.filter(r=>/amazon\.[a-z.]+\/(dp|gp)\//i.test(r.url)&&!/[?&]tag=/i.test(r.url)).map(r=>r.url);
- const redirectedOff=links.filter(r=>r.redirected&&r.finalUrl&&new URL(r.finalUrl).hostname!==new URL(r.url).hostname&&!r.affiliate).map(r=>({url:r.url,to:r.finalUrl}));
+ const redirectedOff=links.filter(r=>r.redirected&&r.finalUrl&&new URL(r.finalUrl).hostname.replace(/^www\./,'')!==new URL(r.url).hostname.replace(/^www\./,'')&&!r.affiliate).map(r=>({url:r.url,to:r.finalUrl}));
  res.status(200).json({page:u.href,scannedAt:new Date().toISOString(),linksChecked:links.length,dead,blocked,untaggedAmazon:untagged,redirectedOffsite:redirectedOff,affiliateLinks:aff,
   disclosure:{needed:aff>0,found:hasDisc,ok:aff===0||hasDisc},seo:{title,description:desc,issues:seo},links,
   score:Math.max(0,100-dead.length*10-(aff&&!hasDisc?25:0)-seo.length*5-untagged.length*5)});

@@ -1,4 +1,4 @@
-# How to use LinkKeeper (v0.2 beta)
+# How to use LinkKeeper (v0.2.2 beta)
 
 1. Open https://linkkeeper.leonlink.net (fallback: https://linkkeeper-goodbyedawg-7221s-projects.vercel.app).
 2. Paste a page address (e.g. https://leonlink.net/) and click **Scan**.

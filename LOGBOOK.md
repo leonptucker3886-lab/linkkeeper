@@ -25,3 +25,8 @@
 ## 2026-10-27 — v0.2.1 second polish
 - Live test on leonlink.net flagged 13 harmless leonlink.net -> www.leonlink.net redirects as "redirects to another site". Now www/apex hops are ignored.
 - Re-tested leonlink.net home: 90/100, 23 links, 0 dead, 0 blocked, 0 untagged Amazon links, disclosure found.
+
+
+## v0.2.2 (2026-10-28)
+- Fixed: page titles/descriptions showed raw HTML entities like `&amp;`; scanner now decodes entities and collapses whitespace.
+- Fixed: stale banner said "v0.2 rough draft"; now "BETA: LinkKeeper v0.2.2".

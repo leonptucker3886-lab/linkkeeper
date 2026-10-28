@@ -15,7 +15,8 @@ module.exports=async(req,res)=>{
  const hrefs=[...html.matchAll(/<a\b[^>]*href\s*=\s*["']([^"'#]+)["']/gi)].map(m=>m[1]).filter(h=>!/^(mailto|tel|javascript):/i.test(h));
  const abs=[...new Set(hrefs.map(h=>{try{return new URL(h,u).href}catch{return null}}).filter(Boolean))].slice(0,60);
  const links=[];for(let i=0;i<abs.length;i+=10)links.push(...await Promise.all(abs.slice(i,i+10).map(async l=>({url:l,affiliate:AFF.some(r=>r.test(l)),...(await check(l))}))));
- const g=re=>{const m=html.match(re);return m?m[1].trim():''};
+ const dec=t=>t.replace(/&#(\d+);/g,(_,n)=>String.fromCharCode(n)).replace(/&#x([0-9a-f]+);/gi,(_,n)=>String.fromCharCode(parseInt(n,16))).replace(/&quot;/g,'"').replace(/&#39;|&apos;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&');
+ const g=re=>{const m=html.match(re);return m?dec(m[1].replace(/\s+/g,' ').trim()):''};
  const title=g(/<title[^>]*>([\s\S]*?)<\/title>/i),desc=g(/<meta[^>]+name=["']description["'][^>]+content=["']([^"']*)/i);
  const seo=[];
  if(!title)seo.push('Missing <title>');else if(title.length>60)seo.push(`Title is ${title.length} chars (aim for 60 or fewer)`);
